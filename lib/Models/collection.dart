@@ -8,7 +8,7 @@ class Collection{
   Collection.withID(this.id, this.name, [this.soundIDs]);
   Collection(this.name);
 
-  // Convert a Collection object into a Collection object
+  // Convert a Collection object into a Collection map
   Map<String, dynamic> toMap() {
 
     var map = Map<String, dynamic>();

@@ -1,9 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:soundpaddb/Models/collection.dart';
 import 'package:soundpaddb/Models/list_of_all_sounds.dart';
 import 'package:soundpaddb/Models/sound.dart';
 import 'package:soundpaddb/Utils/database_helper.dart';
 import 'package:soundpaddb/screens/collection_detail.dart';
+import 'list_of_collections.dart' as list_of_collections;
 
 class AddSounds extends StatefulWidget {
   final Collection collection;
@@ -24,7 +26,6 @@ class _AddSoundsState extends State<AddSounds> {
 
   //elements cannot be appended to this list until isGrowable = false
   List<bool> isSoundSelected;
-  int selectedSoundsCounter = 0;
 
   var playingColor = Colors.red;
 
@@ -87,7 +88,7 @@ class _AddSoundsState extends State<AddSounds> {
                           child: Container(
                             height: 60,
                             width: 60,
-                            child: Image.asset('assets/images/$soundName.jpg',
+                            child: Image.asset('assets/images/$soundName.png',
                             fit: BoxFit.cover),
                           )
                         ),
@@ -99,7 +100,6 @@ class _AddSoundsState extends State<AddSounds> {
                             setState(() {
                               // toggle selected sound
                               isSoundSelected[getIndexOfAsound(soundName)] = ! isSoundSelected[getIndexOfAsound(soundName)];
-                              selectedSoundsCounter++;
                             });
                           },
                           icon: isSoundSelected[getIndexOfAsound(soundName)] ?
@@ -147,7 +147,6 @@ class _AddSoundsState extends State<AddSounds> {
   void _handleTap(Sound sound) {
     setState(() {
       sound.isPlaying = !sound.isPlaying;
-      print(sound.isPlaying);
       if (sound.isPlaying) {
         sound.audioCache.play(sound.fileName, volume: 100);
         sound.displayColor = playingColor;
@@ -159,10 +158,19 @@ class _AddSoundsState extends State<AddSounds> {
     });
   }
 
+  bool anySoundSelected(){
+    for(int i =0; i < isSoundSelected.length; i++){
+      if(isSoundSelected[i]){
+        return true;
+      }
+    }
+    return false;
+  }
 
   String _getIdsOfSelectedSounds(){
     String soundids = "";
-    if(selectedSoundsCounter > 0){
+    print(anySoundSelected());
+    if(anySoundSelected()){
       for(int i = 0; i < sounds.length; i++){
         if(isSoundSelected[i]){
           //add all the selected sounds ids to a string and separate with a comma
@@ -175,48 +183,66 @@ class _AddSoundsState extends State<AddSounds> {
     return soundids;
   }
 
+  String removeDuplicates(String newSoundIDs, String collectionSoundIDs){
+    String all ='';
+    if(collectionSoundIDs != ''){
+      all = collectionSoundIDs + ',' + newSoundIDs;
+    }
+    else{
+      all = newSoundIDs;
+    }
+
+    Set noDuplicates = new Set.from(all.split(','));
+    String mergedSoundIDs = '';
+    for (String i in noDuplicates){
+      mergedSoundIDs += i + ",";
+    }
+    return mergedSoundIDs.substring(0,mergedSoundIDs.length - 1);
+  }
+
   void _saveChosenSounds() async{
     // if the collection's soundIDs field is empty, then overwrite it
     if(collection.soundIDs == null || collection.soundIDs.length < 1){
-      collection.soundIDs = _getIdsOfSelectedSounds();
-      print('add new sounds');
+//      print(removeDuplicates(_getIdsOfSelectedSounds(), collection.soundIDs));
+      collection.soundIDs = removeDuplicates(_getIdsOfSelectedSounds(), collection.soundIDs);
     }
     //if the collection already contains some sounds, append the newly added to the previous soundId String
     else{
-      collection.soundIDs = collection.soundIDs + ',' + _getIdsOfSelectedSounds();
+//      print(removeDuplicates(_getIdsOfSelectedSounds(), collection.soundIDs));
+      collection.soundIDs = removeDuplicates(_getIdsOfSelectedSounds(), collection.soundIDs);
     }
 
     int result = -1;
 
     List<String> collectionNames = await _databaseHelper.getAllCollectionNames();
-    debugPrint(collectionNames.toString());
     int collectionsCount = collectionNames.length;
 
      if(collectionNames != null && collectionsCount > 0){
        if(_collectionExistsInDB(collection.name, collectionNames)){
-         debugPrint(_collectionExistsInDB(collection.name, collectionNames).toString());
-         debugPrint('updating collection');
+         print('collection exists');
          result = await _databaseHelper.updateCollection(collection);
        }
        else{
-         debugPrint('collection doesnt exist');
+         print('collection doesnt exist');
          result = await _databaseHelper.insertCollection(collection);
-         debugPrint(result.toString());
        }
      }
 
-    if(collection.id != null){
-      result = await _databaseHelper.updateCollection(collection);
-    }
-    //if the collection doesn't exist save it to the db
-    else{
-      debugPrint('collection doesnt exist');
-      result = await _databaseHelper.insertCollection(collection);
-      debugPrint(result.toString());
-    }
+//    if(collection.id != null){
+//      result = await _databaseHelper.updateCollection(collection);
+//    }
+//    //if the collection doesn't exist save it to the db
+//    else{
+//      result = await _databaseHelper.insertCollection(collection);
+//    }
+//
+//    if(result != 0) {
+////      print('success');
+//    }
+//    else {
+////      print('failure');
+//    }
 
-    if(result != 0) print('success');
-    else print('failure');
     Navigator.pop(context);
     Navigator.pop(context);
     Navigator.push(context,

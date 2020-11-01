@@ -7,6 +7,10 @@ class Library{
     Sound(1, "crowd"),
     Sound(2, "running"),
     Sound(3, "puddles"),
+    Sound(4, "tavern"),
+    Sound(5, "forest"),
+    Sound(6, "gun"),
+    Sound(7, "bird"),
   ];
 
   static List<Sound> getAllSounds (){

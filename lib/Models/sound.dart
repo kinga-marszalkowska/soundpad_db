@@ -17,7 +17,7 @@ class Sound{
     this.soundID = soundID;
     this.soundName = soundName;
     this.fileName = soundName + ".wav";
-    this.soundImage = soundName + ".jpg";
+    this.soundImage = soundName + ".png";
     this.audioPlayer = new AudioPlayer();
     this.audioCache = new AudioCache(fixedPlayer: audioPlayer);
     this.isPlaying = false;

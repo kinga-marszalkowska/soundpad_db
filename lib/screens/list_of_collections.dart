@@ -5,6 +5,7 @@ import 'package:soundpaddb/screens/add_sounds_to_collection.dart';
 import 'package:soundpaddb/screens/collection_detail.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class CollectionList extends StatefulWidget {
   @override
@@ -23,13 +24,18 @@ class _CollectionListState extends State<CollectionList> {
 
   final _formKey = GlobalKey<FormState>();
 
-
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     if(collections == null){
       collections = List<Collection>();
       updateListView();
     }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
 
 
     return Scaffold(
@@ -38,7 +44,7 @@ class _CollectionListState extends State<CollectionList> {
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: (){
-              setState(() {});
+              updateListView();
             },
           )
         ],
@@ -53,7 +59,7 @@ class _CollectionListState extends State<CollectionList> {
             child: Text('Your collections:'),
           ),
           Flexible(child:
-            getListOfCollections()
+            collections.length == 0? getWaitingAnimation() : getListOfCollections()
           ),
         ],
       ),
@@ -101,7 +107,6 @@ class _CollectionListState extends State<CollectionList> {
                 context,
                 MaterialPageRoute(builder: (context) => SoundPad(collection: collections[index])),
               );
-              debugPrint('list tile touched');
             },
           ),
         );
@@ -112,12 +117,15 @@ class _CollectionListState extends State<CollectionList> {
   void updateListView(){
     final Future <Database> dbFuture = _databaseHelper.initializeDatabase();
     dbFuture.then((database){
-      Future<List<Collection>> noteListFuture = _databaseHelper.getCollectionList();
-      noteListFuture.then((collectionList){
+      Future<List<Collection>> collectionListFuture = _databaseHelper.getCollectionList();
+      collectionListFuture.then((collectionList){
         setState(() {
           this.collections = collectionList;
           this.collectionsCount = collectionList.length;
           this.collectionNames = _getCollectionNames();
+          print(collections.toString());
+          print(collectionNames.toString());
+          print(collectionsCount);
         });
       });
     });
@@ -135,7 +143,6 @@ class _CollectionListState extends State<CollectionList> {
               autofocus: true,
               controller: newCollectionNameTextEditingController,
               onChanged: (value){
-                debugPrint(value);
                 updateName();
               },
               validator: (value){
@@ -175,10 +182,10 @@ class _CollectionListState extends State<CollectionList> {
             if (_formKey.currentState.validate()) {
               setState(() {
                 newCollectionNameTextEditingController.clear();
+                _databaseHelper.insertCollection(newCollection);
                 Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AddSounds(collection: newCollection)),
                 );
-                //_saveCollectionToDB(newCollection);
               });
             }
           },
@@ -233,5 +240,11 @@ class _CollectionListState extends State<CollectionList> {
       if(collectionNames[i] == newCollectionName) return false;
     }
     return true;
+  }
+
+  SpinKitRing getWaitingAnimation(){
+    return SpinKitRing(
+      color: Colors.white70,
+    );
   }
 }

@@ -25,7 +25,6 @@ class _SoundPadState extends State<SoundPad> {
   void initializeSounds(){
     //get sound IDs from the collection and assign them to sounds list
     sounds = Library.convertStringOfIDsToSounds(collection.soundIDs);
-    print('collection name ${collection.name}');
     //load all the sounds
   }
 
@@ -33,7 +32,6 @@ class _SoundPadState extends State<SoundPad> {
   void _handleTap(Sound sound) {
     setState(() {
       sound.isPlaying = !sound.isPlaying;
-      print(sound.isPlaying);
       if (sound.isPlaying) {
         sound.audioCache.play(sound.fileName, volume: 100);
         sound.displayColor = playingColor;
@@ -49,7 +47,6 @@ class _SoundPadState extends State<SoundPad> {
     setState(() {
       sound.audioCache.loop(sound.fileName);
       sound.isPlaying = true;
-      print('loop');
       sound.displayColor = loopColor;
     });
   }
@@ -63,7 +60,9 @@ class _SoundPadState extends State<SoundPad> {
     return Scaffold(
       appBar: AppBar(
         title: FlatButton(
-          onPressed: (){print('title');},
+          onPressed: (){
+            print('title');
+            },
           onLongPress: (){
             // make it editable
           },
@@ -105,7 +104,7 @@ class _SoundPadState extends State<SoundPad> {
                             Sound clickedSound = getSoundByName(soundName);
                             loopSound(clickedSound);
                           },
-                          child: Image.asset('assets/images/$soundName.jpg',
+                          child: Image.asset('assets/images/$soundName.png',
                               fit: BoxFit.cover),
                         ),
                       ),
@@ -116,8 +115,6 @@ class _SoundPadState extends State<SoundPad> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          //TODO move to addSounds() screen and pass this collection
-          print(collection.toString());
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => AddSounds(collection: collection)));
           //cant add two the same sounds
@@ -136,7 +133,6 @@ class _SoundPadState extends State<SoundPad> {
     for(int i = 0; i < sounds.length; i++){
       if(sounds[i].soundName == soundname) return sounds[i];
     }
-    debugPrint('couldnt find a the sound');
     return null;
   }
 

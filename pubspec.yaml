@@ -23,6 +23,8 @@ dependencies:
   path_provider: ^1.6.5
   audioplayers: ^0.15.1
   rflutter_alert: ^1.0.3
+  flutter_spinkit: ^4.1.2
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -32,6 +34,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+
 
 
 # For information on the generic Dart part of this file, see the

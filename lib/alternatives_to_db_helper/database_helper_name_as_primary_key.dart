@@ -40,7 +40,6 @@ class DatabaseHelper {
 
   Future <Database> initializeDatabase() async{
     // get the app's documents directory path to store the db in
-    debugPrint('initializing db');
     Directory directory = await getApplicationDocumentsDirectory();
     String path = join(directory.path, _databaseName);
 
@@ -50,7 +49,6 @@ class DatabaseHelper {
   }
 
   void _createDb(Database db, int version) async {
-    print('create db');
     await db.execute('''CREATE TABLE $collectionsTable(
     $columnName TEXT PRIMARY KEY NOT NULL,
     $columnSoundIDs TEXT)''');
@@ -99,16 +97,12 @@ class DatabaseHelper {
   Future<int> insertCollection(Collection collection) async{
     Database db = await this.database;
     var result = await db.insert(collectionsTable, collection.toMap());
-    //TODO GET ID OF A COLLECTION
     return result;
   }
 
   //Update: update a collection object and save it to the database
   Future<int> updateCollection(Collection collection) async{
-    print('update');
     var db = await this.database;
-    print("updateCollection: ");
-    print(db);
     var result = await db.update(collectionsTable, collection.toMap(),
         where: '$columnName = ?', whereArgs: [collection.name]);
     return result;
