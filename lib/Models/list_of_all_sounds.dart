@@ -11,6 +11,13 @@ class Library{
     Sound(5, "forest"),
     Sound(6, "gun"),
     Sound(7, "bird"),
+    Sound(8, "barking"),
+    Sound(9, "cheering"),
+    Sound(10, "knock"),
+    Sound(11, "lute"),
+    Sound(12, "olddoor"),
+    Sound(13, "thunderstorm"),
+    Sound(14, "whispering"),
   ];
 
   static List<Sound> getAllSounds (){
