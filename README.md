@@ -1,16 +1,58 @@
-# soundpaddb
 
-A new Flutter application.
+# SoundPad
+An app for RPG game masters to help them create a unique atmosphere and suspense. This app contains a collection of sounds that can be used to quickly build a background to any story.
 
-## Getting Started
+## 📖 Table of contents:
+  • [How does it work?](#How-does-it-work?)
+  
+  • [Technologies](#Technologies)
+  
+  • [Ideas](#Ideas)
+  
+  • [Sounds Library](#Sounds-Library)
 
-This project is a starting point for a Flutter application.
+## 🧐 How does it work?
 
-A few resources to get you started if this is your first Flutter project:
+🎵	Create collections of sounds. Plan a game, setting, experiences and gather all appropriate sounds in one place to access them easily during your session.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+▶️⏸️🔁	Press to play/pause, long press to loop sound (play continuously).
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Tile colors indicate mode: 
+  ⚫ black – off, 
+  🔴 red – playing, 
+  🔵 blue – loop.
+
+🔊 You can play multiple sounds at the same time.
+
+🗑️ Delete collections if you don’t need them anymore.
+
+📁 Sounds are kept on device.
+
+
+## ⚙️ Technologies 
+ 
+  • [Flutter](https://flutter.dev/) version: 1.20.0
+  
+  • [Dart](https://dart.dev/) version: 2.9.0
+  
+  • [Audioplayers](https://pub.dev/packages/audioplayers) version: 0.15.1
+  
+  • [Spinkit](https://pub.dev/packages/flutter_spinkit) version: 4.1.2
+  
+  • [sqflite](https://pub.dev/packages/sqflite) version: 1.3.0
+  
+  • [rFlutter alert](https://pub.dev/packages/rflutter_alert) version: 1.0.3
+  
+  • [Path Provider](https://pub.dev/packages/path_provider) version: 1.6.5
+  
+  • Async programming (communication with database)
+
+
+ ## 💡 Ideas
+  • Connect to freesound webpage and to search for and download sounds
+  
+ ## 🎵 Sounds Library
+ 
+ All sounds were downloaded from [FreeSound.org](https://freesound.org).
+  
+  
