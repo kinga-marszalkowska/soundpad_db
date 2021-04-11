@@ -2,6 +2,9 @@
 # SoundPad
 An app for RPG game masters to help them create a unique atmosphere and suspense. This app contains a collection of sounds that can be used to quickly build a background to any story.
 
+![Zasób 2-](https://user-images.githubusercontent.com/64398325/114296129-bf072880-9aa9-11eb-806f-0fa664599961.png)
+
+
 ## 📖 Table of contents:
   • [How does it work?](#How-does-it-work?)
   
